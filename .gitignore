@@ -3,3 +3,4 @@ ksef-producer/.gitattributes
 ksef-producer/.mvn/wrapper/maven-wrapper.properties
 ksef-producer/mvnw
 ksef-producer/mvnw.cmd
+ksef-producer/src/main/resources/application.properties

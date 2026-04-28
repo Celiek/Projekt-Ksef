@@ -13,22 +13,28 @@ create table nabywca(
     adres TEXT
 );
 
-CREATE TABLE dokument(
-    dokument_id bigint PRIMARY KEY,
+CREATE TABLE dokument (
+    dokument_id BIGINT PRIMARY KEY,
     numer_faktury TEXT,
-    faktura_hash TEXT not null,
-    data_wystawienia timestapn default CURRENT_TIMESTAMP,
-    data_sprzedazy date,
+    typ_faktury TEXT,
+    data_wystawienia TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    data_sprzedazy DATE,
+    wystawil TEXT,
+    sprzedawca_id BIGINT,
+    nabywca_id BIGINT,
+    CONSTRAINT fk_sprzedawca FOREIGN KEY (sprzedawca_id) REFERENCES sprzedawca(sprzedawca_id) ON DELETE RESTRICT,
+    CONSTRAINT fk_nabywca FOREIGN KEY (nabywca_id) REFERENCES nabywca(nabywca_id) ON DELETE RESTRICT
+);
+
+create table pozycja_dokumentu(
+    pozycja_id bigint primary key,
+    dokument_id bigint not null,
     nazwa_uslugi TEXT,
     miara_towaru TEXT,
     cena_netto numeric(10,2),
     cena_brutto numeric(10,2),
     stawka_vat int,
     kwota_naleznosci numeric(10,2),
-    wystawil text,
-    id_sprzedawca bigint,
-    id_nabywca bigint,
-    CONSTRAINT fk_sprzedawca_id foreign key (sprzedawca_id) references sprzedawca(sprzedawca_id) ON DELETE RESTRICT,
-    CONSTRAINT fk_nabywca_id foreign key (nabywca_id) references nabywca(nabywca_id) ON DELETE RESTRICT
+    foreign key (dokument_id) references dokument(dokument_id) on delete cascade
 );
 
