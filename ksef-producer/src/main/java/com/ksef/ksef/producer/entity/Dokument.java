@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "dokument")
@@ -26,12 +28,19 @@ public class Dokument {
 
     private String wystawil;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sprzedawca_id")
     private Sprzedawca sprzedawca;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "nabywca_id")
     private Nabywca nabywca;
 
+    @OneToMany(mappedBy = "dokument", cascade = CascadeType.ALL)
+    private List<PozycjaDokumentu> pozycje = new ArrayList<>();
+
+    public void addPozycja(PozycjaDokumentu p){
+        pozycje.add(p);
+        p.setDokument(this);
+    }
 }

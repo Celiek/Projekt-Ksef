@@ -12,7 +12,7 @@ import java.util.List;
 
 
 @Repository
-public interface DokumentRepository extends JpaRepository<Long, Dokument> {
+public interface DokumentRepository extends JpaRepository< Dokument, Long> {
 
     @Transactional
     @Query(value = "SELECT d.dokument_id, d.numer_faktury d.data_wystawienia," +
