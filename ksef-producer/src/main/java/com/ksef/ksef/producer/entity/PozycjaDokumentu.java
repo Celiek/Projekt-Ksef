@@ -17,7 +17,7 @@ public class PozycjaDokumentu {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long pozycja_id;
-    private Long dokument_id;
+    private Long id_dokument;
     private String nazwa_uslugi;
     private String miara_towaru;
     private Double cena_netto;

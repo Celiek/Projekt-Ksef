@@ -29,6 +29,7 @@ public class Dokument {
     @ManyToOne
     @JoinColumn(name = "sprzedawca_id")
     private Sprzedawca sprzedawca;
+
     @ManyToOne
     @JoinColumn(name = "nabywca_id")
     private Nabywca nabywca;

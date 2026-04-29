@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Table(name = "sprzedawca")
 @Getter
@@ -21,4 +23,7 @@ public class Sprzedawca {
     private Long nip;
     private String adres;
     private String nr_konta;
+
+    @OneToMany(mappedBy = "sprzedawca")
+    private List<Dokument> dokumenty;
 }

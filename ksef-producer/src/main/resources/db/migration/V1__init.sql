@@ -28,13 +28,13 @@ CREATE TABLE dokument (
 
 create table pozycja_dokumentu(
     pozycja_id bigint primary key,
-    dokument_id bigint not null,
+    id_dokument bigint not null,
     nazwa_uslugi TEXT,
     miara_towaru TEXT,
     cena_netto numeric(10,2),
     cena_brutto numeric(10,2),
     stawka_vat int,
     kwota_naleznosci numeric(10,2),
-    foreign key (dokument_id) references dokument(dokument_id) on delete cascade
+    foreign key (id_dokument) references dokument(dokument_id) on delete cascade
 );
 

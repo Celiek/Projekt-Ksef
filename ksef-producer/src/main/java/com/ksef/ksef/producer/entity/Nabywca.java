@@ -23,7 +23,7 @@ public class Nabywca {
     private Long nip;
     private String adres;
 
-    @OneToMany(mappedBy = "sprzedawca")
-    private List<Dokument> dokument;
+    @OneToMany(mappedBy = "nabywca")
+    private List<Dokument> dokumenty;
 
 }
