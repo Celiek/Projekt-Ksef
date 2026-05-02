@@ -1,15 +1,13 @@
 package com.ksef.ksef.producer.controller;
 
+import com.ksef.ksef.producer.DTO.DokumentPatchRequest;
 import com.ksef.ksef.producer.DTO.DokumentRequest;
 import com.ksef.ksef.producer.DTO.DokumentResponseDTO;
 import com.ksef.ksef.producer.entity.Dokument;
 import com.ksef.ksef.producer.mapper.DokumentMapper;
 import com.ksef.ksef.producer.service.DokumentService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/dokument")
@@ -23,5 +21,12 @@ public class DokumentController {
     public DokumentResponseDTO createDokument(@RequestBody DokumentRequest request){
         Dokument dokument = service.createDokument(request);
         return dokumentMapper.toDto(dokument);
+    }
+
+    @PatchMapping("/{id}")
+    public DokumentResponseDTO patchDokument(
+            @PathVariable Long id,
+            @RequestBody DokumentPatchRequest request){
+        return service.patchDokument(id,request);
     }
 }

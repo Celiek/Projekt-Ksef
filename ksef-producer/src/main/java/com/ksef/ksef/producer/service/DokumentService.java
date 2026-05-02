@@ -1,11 +1,11 @@
 package com.ksef.ksef.producer.service;
 
-import com.ksef.ksef.producer.DTO.DokumentDTO;
-import com.ksef.ksef.producer.DTO.DokumentRequest;
+import com.ksef.ksef.producer.DTO.*;
 import com.ksef.ksef.producer.entity.Dokument;
 import com.ksef.ksef.producer.entity.Nabywca;
 import com.ksef.ksef.producer.entity.PozycjaDokumentu;
 import com.ksef.ksef.producer.entity.Sprzedawca;
+import com.ksef.ksef.producer.mapper.DokumentMapper;
 import com.ksef.ksef.producer.repository.DokumentRepository;
 import com.ksef.ksef.producer.repository.NabywcaRepository;
 import com.ksef.ksef.producer.repository.SprzedawcaRepository;
@@ -73,5 +73,62 @@ public class DokumentService {
         return dokumentRepo.save(dokument);
     }
 
+    public DokumentResponseDTO patchDokument(Long id, DokumentPatchRequest request){
+        Dokument dokument = dokumentRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Dokument nie istnieje"));
+
+        if(request.numerFaktury != null) {
+            dokument.setNumer_faktury(request.numerFaktury);
+        }
+
+        if(request.typFaktury != null) {
+            dokument.setTyp_faktury(request.typFaktury);
+        }
+
+        if(request.nabywcaId != null){
+            dokument.setNabywca(
+                    nabywcaRepo.findById(request.nabywcaId).orElseThrow()
+            );
+        }
+
+        if(request.sprzedawcaId != null){
+            dokument.setSprzedawca(
+                    sprzedawcaRepo.findById(request.sprzedawcaId).orElseThrow()
+            );
+        }
+
+        if(request.pozycje != null){
+            for(PozycjaPatchDto p : request.pozycje){
+                if(p.pozycjaId != null){
+                    PozycjaDokumentu existing = dokument.getPozycje().stream()
+                            .filter( x -> x.getPozycja_id().equals(p.pozycjaId))
+                            .findFirst()
+                            .orElseThrow(
+                                    () -> new RuntimeException("Pozycja nie znaleziona")
+                            );
+
+                    if(p.nazwaUslugi != null){
+                        existing.setNazwa_uslugi(p.nazwaUslugi);
+                    }
+
+                    if(p.cenaNetto != null){
+                        existing.setCena_netto(p.cenaNetto);
+                    }
+
+                    if(p.cenaBrutto != null){
+                        existing.setCena_brutto(p.cenaBrutto);
+                    }
+                } else {
+                    PozycjaDokumentu nowa = new PozycjaDokumentu();
+                    nowa.setNazwa_uslugi(p.nazwaUslugi);
+                    nowa.setCena_netto(p.cenaNetto);
+                    nowa.setCena_brutto(p.cenaBrutto);
+                    dokument.addPozycja(nowa);
+                }
+            }
+        }
+        DokumentMapper dokumentMapper = new DokumentMapper();
+        return dokumentMapper.toDto(dokument);
+    }
 
 }
