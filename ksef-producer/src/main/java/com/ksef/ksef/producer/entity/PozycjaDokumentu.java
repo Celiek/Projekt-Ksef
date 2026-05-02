@@ -27,7 +27,7 @@ public class PozycjaDokumentu {
     private Double kwota_naleznosci;
 
     @ManyToOne
-    @JoinColumn(name = "dokument_id", nullable = false)
+    @JoinColumn(name = "id_dokument", nullable = false)
     private Dokument dokument;
 
 }

@@ -1,6 +1,5 @@
 package com.ksef.ksef.producer.DTO;
 
-import com.ksef.ksef.producer.entity.PozycjaDokumentu;
 import com.ksef.ksef.producer.request.PozycjaRequest;
 
 import java.util.List;

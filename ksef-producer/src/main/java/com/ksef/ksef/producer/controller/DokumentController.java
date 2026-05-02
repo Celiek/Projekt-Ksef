@@ -1,10 +1,11 @@
 package com.ksef.ksef.producer.controller;
 
 import com.ksef.ksef.producer.DTO.DokumentRequest;
+import com.ksef.ksef.producer.DTO.DokumentResponseDTO;
 import com.ksef.ksef.producer.entity.Dokument;
+import com.ksef.ksef.producer.mapper.DokumentMapper;
 import com.ksef.ksef.producer.service.DokumentService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,9 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class DokumentController {
 
     private final DokumentService service;
+    private final DokumentMapper dokumentMapper;
 
     @PostMapping
-    public ResponseEntity<Dokument> createDokument(@RequestBody DokumentRequest request){
-        return ResponseEntity.ok(service.createDokument(request));
+    public DokumentResponseDTO createDokument(@RequestBody DokumentRequest request){
+        Dokument dokument = service.createDokument(request);
+        return dokumentMapper.toDto(dokument);
     }
 }

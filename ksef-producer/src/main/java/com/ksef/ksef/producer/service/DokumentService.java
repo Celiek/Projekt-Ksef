@@ -13,6 +13,8 @@ import com.ksef.ksef.producer.request.PozycjaRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -25,7 +27,22 @@ public class DokumentService {
 
     // zwraca wszystkie faktury zakupowe po nipie dla nabywcy
     public List<DokumentDTO> getAllDocumentsForBuyerByNip(Long nip){
-           List<DokumentDTO> dokumenty =  dokumentRepo.findDocumentsByBuyersNip(nip);
+
+           List<DokumentDTO> dokumenty =  dokumentRepo.findDocumentsByBuyersNip(nip)
+                   .stream()
+                   .map(r -> new DokumentDTO(
+                           (Long) r[0],
+                           (String) r[1],
+                           (Date) r[2],
+                           (Long) r[3],
+                           (String) r[4],
+                           (BigDecimal) r[5],
+                           (BigDecimal) r[6],
+                           (BigDecimal) r[7],
+                           (String) r[8],
+                           (Long) r[9]
+                   )).toList();
+
            return dokumenty;
     }
 
