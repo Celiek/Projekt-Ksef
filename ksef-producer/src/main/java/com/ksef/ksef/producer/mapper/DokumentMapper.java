@@ -12,8 +12,18 @@ public class DokumentMapper {
 
         dto.setDokument_id(dokument.getDokument_id());
         dto.setNumer_faktury(dokument.getNumer_faktury());
-        dto.setNazwa_sprzedawcy(String.valueOf(dokument.getSprzedawca()));
-        dto.setNazwaNabywcy(String.valueOf(dokument.getNabywca()));
+
+        if(dokument.getSprzedawca() != null){
+            dto.setNazwa_sprzedawcy(
+                    dokument.getSprzedawca().getNazwa_sprzedawcy()
+            );
+        }
+
+        if(dokument.getNabywca() != null){
+            dto.setNazwaNabywcy(
+                    dokument.getNabywca().getNazwa_nabywcy()
+            );
+        }
 
         dto.setPozycje(
                 dokument.getPozycje().stream()
