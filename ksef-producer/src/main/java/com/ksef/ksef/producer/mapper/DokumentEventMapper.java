@@ -1,7 +1,6 @@
 package com.ksef.ksef.producer.mapper;
 
 import com.ksef.ksef.producer.entity.Dokument;
-import com.ksef.ksef.producer.entity.PozycjaDokumentu;
 import com.ksef.ksef.producer.event.DokumentCreatedEvent;
 import org.springframework.stereotype.Component;
 
