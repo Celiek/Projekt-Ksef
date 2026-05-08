@@ -1,6 +1,7 @@
 package com.ksef.ksef.producer.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,6 +29,7 @@ public class PozycjaDokumentu {
 
     @ManyToOne
     @JoinColumn(name = "id_dokument", nullable = false)
+    @JsonBackReference
     private Dokument dokument;
 
 }

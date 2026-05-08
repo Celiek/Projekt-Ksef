@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DokumentCreatedEvent {
-    private Long dokuemntId;
+    private Long dokumentId;
     private String numerFaktury;
     private String sprzedawca;
     private String nabywca;

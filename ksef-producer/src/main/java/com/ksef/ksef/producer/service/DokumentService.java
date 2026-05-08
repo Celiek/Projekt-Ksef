@@ -5,7 +5,10 @@ import com.ksef.ksef.producer.entity.Dokument;
 import com.ksef.ksef.producer.entity.Nabywca;
 import com.ksef.ksef.producer.entity.PozycjaDokumentu;
 import com.ksef.ksef.producer.entity.Sprzedawca;
+import com.ksef.ksef.producer.event.DokumentCreatedEvent;
+import com.ksef.ksef.producer.mapper.DokumentEventMapper;
 import com.ksef.ksef.producer.mapper.DokumentMapper;
+import com.ksef.ksef.producer.producer.DokumentEventProducer;
 import com.ksef.ksef.producer.repository.DokumentRepository;
 import com.ksef.ksef.producer.repository.NabywcaRepository;
 import com.ksef.ksef.producer.repository.SprzedawcaRepository;
@@ -24,6 +27,8 @@ public class DokumentService {
     private final DokumentRepository dokumentRepo;
     private final NabywcaRepository nabywcaRepo;
     private final SprzedawcaRepository sprzedawcaRepo;
+    private final DokumentEventMapper dokumentEventMapper;
+    private final DokumentEventProducer dokumentEventProducer;
 
     // zwraca wszystkie faktury zakupowe po nipie dla nabywcy
     public List<DokumentDTO> getAllDocumentsForBuyerByNip(Long nip){
@@ -70,7 +75,15 @@ public class DokumentService {
 
             dokument.addPozycja(pozycja);
         }
-        return dokumentRepo.save(dokument);
+
+        Dokument saved = dokumentRepo.save(dokument);
+
+        DokumentCreatedEvent event =
+                dokumentEventMapper.mapToEvent(saved);
+
+        dokumentEventProducer.send(event);
+
+        return saved;
     }
 
     public DokumentResponseDTO patchDokument(Long id, DokumentPatchRequest request){

@@ -10,7 +10,6 @@ import com.ksef.ksef.producer.mapper.DokumentMapper;
 import com.ksef.ksef.producer.producer.DokumentEventProducer;
 import com.ksef.ksef.producer.service.DokumentService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

@@ -1,17 +1,19 @@
 services:
+
   zookeeper:
     image: confluentinc/cp-zookeeper:7.5.0
-    hostname: zookeeper
     container_name: zookeeper
-    ports:
-      - "2181:2181"
+    restart: always
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 3000
+    ports:
+      - "2181:2181"
 
-  kafka-broker:
+  kafka:
     image: confluentinc/cp-kafka:7.5.0
     container_name: kafka
+    restart: always
     depends_on:
       - zookeeper
     ports:
@@ -19,49 +21,95 @@ services:
       - "29092:29092"
     environment:
       KAFKA_BROKER_ID: 1
+
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+
       KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,PLAINTEXT_INTERNAL://0.0.0.0:29092
+
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://kafka:29092
+
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT_INTERNAL
+
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
   kafka-ui:
-    container_name: kafka_ui
     image: provectuslabs/kafka-ui:latest
+    container_name: kafka_ui
+    restart: always
+    depends_on:
+      - kafka
     ports:
       - "8084:8080"
-    depends_on:
-      - kafka-broker
     environment:
-      KAFKA_CLUSTERS_NAME: local
-      KAFKA_CLUSTERS_BOOTSTRAPSERVERS: kafka:29092
-      DYNAMIC_CONFIG_ENABLED: 'true'
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
 
-  kafka-schema-registry:
+  schema-registry:
     image: confluentinc/cp-schema-registry:7.5.0
-    hostname: kafka-schema-registry
-    container_name: kafka_schema_registry
+    container_name: schema_registry
+    restart: always
     depends_on:
-      - kafka-broker
+      - kafka
+    ports:
+      - "8081:8081"
     environment:
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
       SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: PLAINTEXT://kafka:29092
-      SCHEMA_REGISTRY_HOST_NAME: kafka-schema-registry
       SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
 
-  postgreSQL-DB:
-    image: postgres
+  postgres:
+    image: postgres:16
+    container_name: postgres
     restart: always
-    shm_size: 128mb
-    environment:
-      POSTGRES_PASSWORD: adminpass
-      POSTGRES_USER: admin
-      POSTGRES_DB: ksef
-      PGDATA: /var/lib/postgresql/data/pgdata
     ports:
       - "5432:5432"
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: adminpass
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    restart: always
+    depends_on:
+      - postgres
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.pl
+      PGADMIN_DEFAULT_PASSWORD: admin
+
+  minio:
+    image: minio/minio
+    container_name: minio
+    restart: always
+    command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: adminadmin
+    volumes:
+      - minio_data:/data
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:25.0
+    container_name: keycloak
+    restart: always
+    command: start-dev
+    depends_on:
+      - postgres
+    ports:
+      - "8089:8080"
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+
 volumes:
   postgres_data:
+  minio_data:
