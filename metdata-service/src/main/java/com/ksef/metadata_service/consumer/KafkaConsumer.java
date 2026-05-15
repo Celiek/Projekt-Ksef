@@ -1,0 +1,20 @@
+package com.ksef.metadata_service.consumer;
+
+import com.ksef.metadata_service.MetadataServiceApplication;
+import com.ksef.metadata_service.event.PdfUploadEvent;
+import com.ksef.metadata_service.service.MetadataService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+
+@Component
+@RequiredArgsConstructor
+@Slf4j
+public class KafkaConsumer {
+    private final MetadataService service;
+
+    public void consume(PdfUploadEvent event){
+        log.info("Zapisana metadata {}",event.getNumerFakttury());
+        service.save(event)
+    }
+}
