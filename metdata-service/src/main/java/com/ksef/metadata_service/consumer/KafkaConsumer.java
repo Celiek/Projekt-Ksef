@@ -1,6 +1,5 @@
 package com.ksef.metadata_service.consumer;
 
-import com.ksef.metadata_service.MetadataServiceApplication;
 import com.ksef.metadata_service.event.PdfUploadEvent;
 import com.ksef.metadata_service.service.MetadataService;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +13,7 @@ public class KafkaConsumer {
     private final MetadataService service;
 
     public void consume(PdfUploadEvent event){
-        log.info("Zapisana metadata {}",event.getNumerFakttury());
-        service.save(event)
+        log.info("Zapisana metadata {}",event.getNumerFaktury());
+        service.save(event);
     }
 }
