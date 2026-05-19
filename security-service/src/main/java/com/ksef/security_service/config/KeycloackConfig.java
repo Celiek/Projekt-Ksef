@@ -12,7 +12,7 @@ public class KeycloackConfig {
     @Bean
     public Keycloak keycloak(){
         return KeycloakBuilder.builder()
-                .serverUrl("http://localhost:8085")
+                .serverUrl("http://localhost:8089")
                 .realm("ksef")
                 .clientId("admin-cli")
                 .username("celiek")
