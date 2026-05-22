@@ -1,6 +1,5 @@
 package com.ksef.ksef.producer.DTO;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public class DokumentPatchRequest {

@@ -1,10 +1,10 @@
-package com.ksef.pdf_service;
+package com.ksef.security_service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class PdfServiceApplicationTests {
+class SecurityServiceApplicationTests {
 
 	@Test
 	void contextLoads() {
