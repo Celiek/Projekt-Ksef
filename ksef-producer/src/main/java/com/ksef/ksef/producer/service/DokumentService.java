@@ -15,8 +15,11 @@ import com.ksef.ksef.producer.repository.SprzedawcaRepository;
 import com.ksef.ksef.producer.request.PozycjaRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -86,62 +89,102 @@ public class DokumentService {
         return saved;
     }
 
+    @Transactional
     public DokumentResponseDTO patchDokument(Long id, DokumentPatchRequest request){
         Dokument dokument = dokumentRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Dokument nie istnieje"));
 
-        if(request.numerFaktury != null) {
-            dokument.setNumer_faktury(request.numerFaktury);
+        if (request.numerFaktury != null) {
+            dokument.setNumer_faktury(
+                    request.numerFaktury);
         }
 
-        if(request.typFaktury != null) {
-            dokument.setTyp_faktury(request.typFaktury);
+        if (request.typFaktury != null) {
+            dokument.setTyp_faktury(
+                    request.typFaktury);
         }
 
-        if(request.nabywcaId != null){
+        if (request.nabywcaId != null) {
             dokument.setNabywca(
-                    nabywcaRepo.findById(request.nabywcaId).orElseThrow()
+                    nabywcaRepo.findById(
+                                    request.nabywcaId)
+                            .orElseThrow(() ->
+                                    new RuntimeException(
+                                            "Nabywca nie istnieje"))
             );
         }
 
-        if(request.sprzedawcaId != null){
+        if (request.sprzedawcaId != null) {
             dokument.setSprzedawca(
-                    sprzedawcaRepo.findById(request.sprzedawcaId).orElseThrow()
+                    sprzedawcaRepo.findById(
+                                    request.sprzedawcaId)
+                            .orElseThrow(() ->
+                                    new RuntimeException(
+                                            "Sprzedawca nie istnieje"))
             );
         }
 
-        if(request.pozycje != null){
-            for(PozycjaPatchDto p : request.pozycje){
-                if(p.pozycjaId != null){
-                    PozycjaDokumentu existing = dokument.getPozycje().stream()
-                            .filter( x -> x.getPozycja_id().equals(p.pozycjaId))
-                            .findFirst()
-                            .orElseThrow(
-                                    () -> new RuntimeException("Pozycja nie znaleziona")
-                            );
+        if (request.pozycje != null) {
 
-                    if(p.nazwaUslugi != null){
-                        existing.setNazwa_uslugi(p.nazwaUslugi);
+            if (dokument.getPozycje() == null) {
+                dokument.setPozycje(
+                        new ArrayList<>());
+            }
+
+            for (PozycjaPatchDto p
+                    : request.pozycje) {
+
+                if (p.pozycjaId != null) {
+
+                    PozycjaDokumentu existing =
+                            dokument.getPozycje()
+                                    .stream()
+                                    .filter(x ->
+                                            x.getPozycja_id()
+                                                    .equals(
+                                                            p.pozycjaId))
+                                    .findFirst()
+                                    .orElseThrow(() ->
+                                            new RuntimeException(
+                                                    "Pozycja nie znaleziona"));
+
+                    if (p.nazwaUslugi != null) {
+                        existing.setNazwa_uslugi(
+                                p.nazwaUslugi);
                     }
 
-                    if(p.cenaNetto != null){
-                        existing.setCena_netto(p.cenaNetto);
+                    if (p.cenaNetto != null) {
+                        existing.setCena_netto(
+                                p.cenaNetto);
                     }
 
-                    if(p.cenaBrutto != null){
-                        existing.setCena_brutto(p.cenaBrutto);
+                    if (p.cenaBrutto != null) {
+                        existing.setCena_brutto(
+                                p.cenaBrutto);
                     }
+
                 } else {
-                    PozycjaDokumentu nowa = new PozycjaDokumentu();
-                    nowa.setNazwa_uslugi(p.nazwaUslugi);
-                    nowa.setCena_netto(p.cenaNetto);
-                    nowa.setCena_brutto(p.cenaBrutto);
+
+                    PozycjaDokumentu nowa =
+                            new PozycjaDokumentu();
+
+                    nowa.setNazwa_uslugi(
+                            p.nazwaUslugi);
+
+                    nowa.setCena_netto(
+                            p.cenaNetto);
+
+                    nowa.setCena_brutto(
+                            p.cenaBrutto);
+
                     dokument.addPozycja(nowa);
                 }
             }
         }
+
+        Dokument saved = dokumentRepo.save(dokument);
         DokumentMapper dokumentMapper = new DokumentMapper();
-        return dokumentMapper.toDto(dokument);
+        return dokumentMapper.toDto(saved);
     }
 
 }
