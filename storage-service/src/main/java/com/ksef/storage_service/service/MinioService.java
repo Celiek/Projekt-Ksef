@@ -1,6 +1,5 @@
 package com.ksef.storage_service.service;
 
-import com.ksef.storage_service.consumer.PdfGeneratedConsumer;
 import com.ksef.storage_service.event.PdfGeneratedEvent;
 import io.minio.MinioClient;
 import io.minio.UploadObjectArgs;
@@ -15,6 +14,9 @@ import java.io.File;
 @RequiredArgsConstructor
 public class MinioService {
     private final MinioClient client;
+
+    // TODO
+    // Dodać randomowe generowanie nazwy plików
 
     public void uploadPdf(PdfGeneratedEvent event){
         try{
