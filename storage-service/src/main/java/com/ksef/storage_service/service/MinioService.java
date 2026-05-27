@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -15,17 +16,18 @@ import java.io.File;
 public class MinioService {
     private final MinioClient client;
 
-    // TODO
-    // Dodać randomowe generowanie nazwy plików
+    //TODO
+    // sprawdzić czy w bazie danych plik zapisuje się poprawnie
 
     public void uploadPdf(PdfGeneratedEvent event){
         try{
             File file = new File(event.getFilePath());
+            String randomFileName = UUID.randomUUID() + ".pdf";
 
             client.uploadObject(
                     UploadObjectArgs.builder()
                             .bucket("ksef-pdf")
-                            .object(file.getName())
+                            .object(randomFileName)
                             .filename(file.getAbsolutePath())
                             .build()
             );
