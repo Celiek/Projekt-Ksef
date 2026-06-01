@@ -34,6 +34,12 @@ public class KafkaProducerConfig {
                 ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
                 JsonSerializer.class
         );
+        // dla debugowania nie dodawane są iformacje o klasie
+        config.put(
+                JsonSerializer.ADD_TYPE_INFO_HEADERS,
+                false
+        );
+
 
         return new DefaultKafkaProducerFactory<>(config);
     }

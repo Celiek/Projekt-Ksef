@@ -11,6 +11,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.util.UUID;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -20,8 +23,11 @@ public class PdfService {
 
 
     public void generatePdf(DokumentCreatedEvent event){
+        new File("pdf").mkdirs();
+
         String fileName =
-                "pdf/" + event.getNumerFaktury() + ".pdf";
+                "pdf/" + UUID.randomUUID() + ".pdf";
+        log.info("Tworzenie PDF: {}", fileName);
 
         try {
 

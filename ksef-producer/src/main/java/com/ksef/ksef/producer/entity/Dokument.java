@@ -18,6 +18,7 @@ import java.util.List;
 public class Dokument {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "dokument_id")
     private Long dokument_id;
 
     private String numer_faktury;
@@ -32,7 +33,7 @@ public class Dokument {
     @JoinColumn(name = "sprzedawca_id")
     private Sprzedawca sprzedawca;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+      @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "nabywca_id")
     private Nabywca nabywca;
 
