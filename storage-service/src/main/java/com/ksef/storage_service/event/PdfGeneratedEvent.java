@@ -1,15 +1,14 @@
 package com.ksef.storage_service.event;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class PdfGeneratedEvent {
     private Long dokumentId;
     private String numerFaktury;
-    private String filePath;
+    private String filepath;
 }

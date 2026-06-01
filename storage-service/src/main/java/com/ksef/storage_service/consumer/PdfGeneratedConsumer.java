@@ -15,7 +15,7 @@ public class PdfGeneratedConsumer {
     private final MinioService service;
     private final StorageService storageService;
 
-    @KafkaListener(topics = "pdf.generated",groupId = "storage-service")
+    @KafkaListener(topics = "pdf-generated",groupId = "storage-service")
     public void consume(PdfGeneratedEvent event){
         log.info(
                 "Odebrano PDF: {}",
@@ -23,7 +23,7 @@ public class PdfGeneratedConsumer {
         );
 
         storageService.uploadPdf(
-                event.getFilePath(),
+                event.getFilepath(),
                 event.getNumerFaktury()
         );
     }

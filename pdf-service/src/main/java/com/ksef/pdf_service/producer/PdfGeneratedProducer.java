@@ -12,7 +12,7 @@ public class PdfGeneratedProducer {
 
     public void send(PdfGeneratedEvent event){
         kafkaTemplate.send(
-                "pdf.generated",
+                "pdf-generated",
                 event
         );
     }

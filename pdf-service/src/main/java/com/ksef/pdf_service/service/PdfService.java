@@ -23,10 +23,11 @@ public class PdfService {
 
 
     public void generatePdf(DokumentCreatedEvent event){
-        new File("pdf").mkdirs();
+        String pdfDir = "/tmp/ksef-pdf";
+        new File(pdfDir).mkdirs();
 
         String fileName =
-                "pdf/" + UUID.randomUUID() + ".pdf";
+                pdfDir + "/" + UUID.randomUUID() + ".pdf";
         log.info("Tworzenie PDF: {}", fileName);
 
         try {
@@ -79,6 +80,7 @@ public class PdfService {
                             fileName
                     )
             );
+            log.info("PDF wygenerowany i event wysłany: {}", fileName);
 
         } catch (Exception e) {
 

@@ -16,19 +16,17 @@ import java.util.UUID;
 public class MinioService {
     private final MinioClient client;
 
-    //TODO
-    // sprawdzić czy w bazie danych plik zapisuje się poprawnie
 
     public void uploadPdf(PdfGeneratedEvent event){
         try{
-            File file = new File(event.getFilePath());
-            String randomFileName = UUID.randomUUID() + ".pdf";
+            File file = new File(event.getFilepath());
 
             client.uploadObject(
                     UploadObjectArgs.builder()
                             .bucket("ksef-pdf")
-                            .object(randomFileName)
+                            .object(file.getName())
                             .filename(file.getAbsolutePath())
+                            .contentType("application/pdf")
                             .build()
             );
         } catch (Exception e){

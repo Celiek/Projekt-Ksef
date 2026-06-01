@@ -6,3 +6,4 @@ ksef-producer/mvnw.cmd
 ksef-producer/src/main/resources/application.properties
 api-gateway/.gitattributes
 api-gateway/.mvn/wrapper/maven-wrapper.properties
+/pdf-service/pdf
