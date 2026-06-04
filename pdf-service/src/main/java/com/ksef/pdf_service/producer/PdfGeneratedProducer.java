@@ -11,9 +11,6 @@ public class PdfGeneratedProducer {
     private final KafkaTemplate<String, PdfGeneratedEvent> kafkaTemplate;
 
     public void send(PdfGeneratedEvent event){
-        kafkaTemplate.send(
-                "pdf-generated",
-                event
-        );
+        kafkaTemplate.send("pdf-generated", event);
     }
 }

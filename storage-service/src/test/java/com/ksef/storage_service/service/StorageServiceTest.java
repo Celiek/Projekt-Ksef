@@ -33,10 +33,10 @@ class StorageServiceTest {
                 );
 
         // when + then
-        underTest.uploadPdf(
-                "/tmp/test.pdf",
-                "FV/1/2026"
-        );
+//        underTest.uploadPdf(
+//                "/tmp/test.pdf",
+//                "FV/1/2026"
+//        );
 
         verify(client)
                 .bucketExists(

@@ -15,6 +15,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class DokumentMetadata {
+    // TODO
+    // 1 - nie zapisuje nazwy bucketa, object_name, mime_type ani file_size
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -7,7 +7,6 @@ import lombok.*;
 @Getter
 @Setter
 public class PdfGeneratedEvent {
-    //dodać resztę pól do faktury
     private Long dokumentId;
     private String numerFaktury;
     private String filepath;

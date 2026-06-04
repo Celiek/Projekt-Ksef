@@ -6,6 +6,7 @@ import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Paragraph;
 import com.ksef.pdf_service.event.DokumentCreatedEvent;
 import com.ksef.pdf_service.event.PdfGeneratedEvent;
+import com.ksef.pdf_service.event.PozycjaEvent;
 import com.ksef.pdf_service.producer.PdfGeneratedProducer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,75 +20,65 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class PdfService {
 
+
+    private static final String PDF_DIR = "/tmp/ksef-pdf";
     private final PdfGeneratedProducer producer;
 
-
     public void generatePdf(DokumentCreatedEvent event){
-        String pdfDir = "/tmp/ksef-pdf";
-        new File(pdfDir).mkdirs();
 
-        String fileName =
-                pdfDir + "/" + UUID.randomUUID() + ".pdf";
-        log.info("Tworzenie PDF: {}", fileName);
+        new File(PDF_DIR).mkdirs();
+
+        String filePath =
+                PDF_DIR + "/" + UUID.randomUUID() + ".pdf";
+
+        log.info("Tworzenie PDF: {}", filePath);
 
         try {
+            PdfWriter writer = new PdfWriter(filePath);
+            PdfDocument pdf = new PdfDocument(writer);
+            Document document = new Document(pdf);
 
-            PdfWriter writer =
-                    new PdfWriter(fileName);
+            document.add(new Paragraph("FAKTURA"));
+            document.add(new Paragraph("Numer faktury: " + event.getNumerFaktury()));
+            document.add(new Paragraph("Data wystawienia: " + event.getDataWystawienia()));
+            document.add(new Paragraph("Data sprzedaży: " + event.getDataSprzedazy()));
 
-            PdfDocument pdf =
-                    new PdfDocument(writer);
+            document.add(new Paragraph(" "));
+            document.add(new Paragraph("Sprzedawca: " + event.getSprzedawca()));
+            document.add(new Paragraph("Nabywca: " + event.getNabywca()));
 
-            Document document =
-                    new Document(pdf);
+            document.add(new Paragraph(" "));
+            document.add(new Paragraph("Pozycje:"));
 
-            document.add(
-                    new Paragraph(
-                            "Faktura: "
-                                    + event.getNumerFaktury()
-                    )
-            );
+            if (event.getPozycje() != null) {
+                for (PozycjaEvent p : event.getPozycje()) {
+                    document.add(new Paragraph(
+                            p.getNazwaUslugi()
+                                    + " | netto: " + p.getCenaNetto()
+                                    + " | VAT: " + p.getVat()
+                                    + "%"
+                                    + " | brutto: " + p.getCenaBrutto()
+                    ));
+                }
+            }
 
-            document.add(
-                    new Paragraph(
-                            "Sprzedawca: "
-                                    + event.getSprzedawca()
-                    )
-            );
-
-            document.add(
-                    new Paragraph(
-                            "Nabywca: "
-                                    + event.getNabywca()
-                    )
-            );
-
-            document.add(
-                    new Paragraph(
-                            "Kwota: "
-                                    + event.getKwota()
-                    )
-            );
+//            document.add(new Paragraph(" "));
+//            document.add(new Paragraph("Razem: " + event.getKwota()));
 
             document.close();
-
-            log.info("PDF wygenerowany");
 
             producer.send(
                     new PdfGeneratedEvent(
                             event.getDokumentId(),
                             event.getNumerFaktury(),
-                            fileName
+                            filePath
                     )
             );
-            log.info("PDF wygenerowany i event wysłany: {}", fileName);
+
+            log.info("PDF wygenerowany i event wysłany: {}", filePath);
 
         } catch (Exception e) {
-
-            log.error(
-                    "Błąd generowania PDF",
-                    e
-            );
+            log.error("Błąd generowania PDF", e);
         }
     }
 }

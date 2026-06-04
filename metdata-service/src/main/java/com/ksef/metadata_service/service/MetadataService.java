@@ -18,16 +18,16 @@ public class MetadataService {
 
     @Transactional
     public void save(PdfUploadEvent event){
-        DokumentMetadata metadata =
-                DokumentMetadata.builder()
-                        .dokumentId(event.getDokumentId())
-                        .numerFaktury(event.getNumerFaktury())
-                        .bucketName(event.getBucketName())
-                        .objectName(event.getObject_name())
-                        .mimeType(event.getMimeType())
-                        .createdAt(LocalDateTime.now())
-                        .status(StorageStatus.STORED)
-                        .build();
+        DokumentMetadata metadata = DokumentMetadata.builder()
+                .dokumentId(event.getDokumentId())
+                .numerFaktury(event.getNumerFaktury())
+                .bucketName(event.getBucketName())
+                .objectName(event.getObjectName())
+                .mimeType(event.getMimeType())
+                .fileSize(event.getFileSize())
+                .createdAt(LocalDateTime.now())
+                .status(StorageStatus.STORED)
+                .build();
 
         repo.save(metadata);
     }

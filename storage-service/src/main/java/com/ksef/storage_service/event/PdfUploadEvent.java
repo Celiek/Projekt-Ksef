@@ -1,18 +1,19 @@
-package com.ksef.metadata_service.event;
+package com.ksef.storage_service.event;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class PdfUploadEvent {
     private Long dokumentId;
     private String numerFaktury;
     private String bucketName;
     private String objectName;
-    private Long fileSize;
     private String mimeType;
-
+    private Long fileSize;
 }

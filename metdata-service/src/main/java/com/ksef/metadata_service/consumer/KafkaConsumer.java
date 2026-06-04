@@ -14,7 +14,7 @@ public class KafkaConsumer {
     private final MetadataService service;
 
     @KafkaListener(
-            topics = "pdf-stored",
+            topics = "pdf-generated",
             groupId = "metadata-service"
     )
     public void consume(PdfUploadEvent event){
