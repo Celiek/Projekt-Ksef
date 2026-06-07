@@ -13,14 +13,10 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
-public class RateLimitFilter extends
-        AbstractGatewayFilterFactory<Object> {
-
-    private final Map<String, Bucket>
-            cache = new ConcurrentHashMap<>();
+public class RateLimitFilter extends AbstractGatewayFilterFactory<Object> {
+    private final Map<String, Bucket> cache = new ConcurrentHashMap<>();
 
     private Bucket createBucket() {
-
         return Bucket.builder()
                 .addLimit(
                         Bandwidth.classic(
@@ -35,9 +31,7 @@ public class RateLimitFilter extends
     }
 
     @Override
-    public GatewayFilter apply(
-            Object config
-    ) {
+    public GatewayFilter apply(Object config) {
 
         return (exchange, chain) -> {
 

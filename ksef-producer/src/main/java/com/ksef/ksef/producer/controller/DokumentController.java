@@ -27,7 +27,7 @@ public class DokumentController {
         Dokument dokument = service.createDokument(request);
 
         DokumentCreatedEvent event = dokumentEventMapper.mapToEvent(dokument);
-        producer.send(event);
+        //producer.send(event);
         return dokumentMapper.toDto(dokument);
     }
 
