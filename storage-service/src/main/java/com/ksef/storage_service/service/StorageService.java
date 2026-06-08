@@ -4,15 +4,13 @@ package com.ksef.storage_service.service;
 import com.ksef.storage_service.consumer.PdfStoredProducer;
 import com.ksef.storage_service.event.PdfGeneratedEvent;
 import com.ksef.storage_service.event.PdfUploadEvent;
-import io.minio.BucketExistsArgs;
-import io.minio.MakeBucketArgs;
-import io.minio.MinioClient;
-import io.minio.UploadObjectArgs;
+import io.minio.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.io.InputStream;
 
 @Slf4j
 @Service
@@ -81,6 +79,19 @@ public class StorageService {
 
         } catch (Exception e) {
             log.error("Błąd uploadu PDF", e);
+        }
+    }
+
+    public InputStream downloadPdf(String objectName) {
+        try {
+            return client.getObject(
+                    GetObjectArgs.builder()
+                            .bucket("faktury")
+                            .object(objectName)
+                            .build()
+            );
+        } catch (Exception e) {
+            throw new RuntimeException("Błąd pobierania PDF z MinIO", e);
         }
     }
 
