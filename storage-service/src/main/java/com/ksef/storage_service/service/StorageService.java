@@ -1,7 +1,7 @@
 package com.ksef.storage_service.service;
 
 
-import com.ksef.storage_service.config.RestTemplateConfig;
+import org.springframework.web.client.RestTemplate;
 import com.ksef.storage_service.consumer.PdfStoredProducer;
 import com.ksef.storage_service.dto.DocumentMetadataResponse;
 import com.ksef.storage_service.event.PdfGeneratedEvent;
@@ -12,9 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
 import java.io.InputStream;
@@ -29,7 +26,7 @@ public class StorageService {
 
     private final MinioClient client;
     private final PdfStoredProducer producer;
-    private final RestTemplateConfig restTemplate;
+    private final RestTemplate restTemplate;
 
     // do poprawienia po zmianie sposobu pobierania i dodawania plików do minio
     public void uploadPdf(PdfGeneratedEvent event) {
@@ -80,8 +77,8 @@ public class StorageService {
                             BUCKET_NAME,
                             objectName,
                             MIME_TYPE,
-                            ownerId,
-                            file.length()
+                            file.length(),
+                            event.getOwnerId()
                     )
             );
 
@@ -95,7 +92,7 @@ public class StorageService {
     public InputStream downloadPdfByDocumentID(Long documentId, String ownerId) {
         try {
             DocumentMetadataResponse metadata = restTemplate.getForObject(
-                    "http://localhost:8083/api/v1/metadata/document/" + dokumentId,
+                    "http://localhost:8083/api/v1/metadata/document/" + documentId,
                     DocumentMetadataResponse.class
             );
 

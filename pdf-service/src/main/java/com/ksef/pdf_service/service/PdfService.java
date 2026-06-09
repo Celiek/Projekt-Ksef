@@ -76,7 +76,8 @@ public class PdfService {
                     new PdfGeneratedEvent(
                             event.getDokumentId(),
                             event.getNumerFaktury(),
-                            filePath
+                            filePath,
+                            event.getOwnerId()
                     )
             );
 
