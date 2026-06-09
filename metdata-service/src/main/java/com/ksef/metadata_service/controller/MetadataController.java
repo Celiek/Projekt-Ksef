@@ -13,6 +13,7 @@ public class MetadataController {
 
     @GetMapping("/document/{id}")
     public DokumentMetadata getDokumentId(@PathVariable Long id) {
+
         return service.findByDokumentId(id);
     }
 

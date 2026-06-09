@@ -10,4 +10,5 @@ public class PdfGeneratedEvent {
     private Long dokumentId;
     private String numerFaktury;
     private String filepath;
+    private String ownerId;
 }

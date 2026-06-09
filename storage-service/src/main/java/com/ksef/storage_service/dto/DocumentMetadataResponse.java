@@ -1,15 +1,13 @@
-package com.ksef.storage_service.event;
-
+package com.ksef.storage_service.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class PdfUploadEvent {
+@AllArgsConstructor
+public class DocumentMetadataResponse {
     private Long dokumentId;
     private String numerFaktury;
     private String bucketName;

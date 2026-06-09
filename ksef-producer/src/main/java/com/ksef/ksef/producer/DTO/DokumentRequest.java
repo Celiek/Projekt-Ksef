@@ -8,6 +8,5 @@ public class DokumentRequest {
     public String numerFaktury;
     public Long nabywcaId;
     public Long sprzedawcaId;
-    public String ownerId;
     public List<PozycjaRequest> pozycje;
 }

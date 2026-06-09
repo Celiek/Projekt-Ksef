@@ -22,5 +22,6 @@ public class DokumentCreatedEvent {
     private BigDecimal kwotaNetto;
     private BigDecimal kwotaBrutto;
     private int kwotaVat;
+    private String ownerId;
     private List<PozycjaEvent> pozycje;
 }

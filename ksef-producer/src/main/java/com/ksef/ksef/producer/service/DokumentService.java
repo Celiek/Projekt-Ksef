@@ -55,7 +55,7 @@ public class DokumentService {
     }
 
     // zapisuje faktury do bazy danych
-    public Dokument createDokument(DokumentRequest request){
+    public Dokument createDokument(DokumentRequest request,String ownerId){
         Dokument dokument = new Dokument();
 
         dokument.setNumer_faktury(request.numerFaktury);
@@ -68,7 +68,7 @@ public class DokumentService {
 
         dokument.setNabywca(nabywca);
         dokument.setSprzedawca(sprzedawca);
-        dokument.setOwnerId(request.ownerId);
+        dokument.setOwnerId(ownerId);
 
         for(PozycjaRequest p : request.pozycje){
             PozycjaDokumentu pozycja = new PozycjaDokumentu();

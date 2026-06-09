@@ -27,18 +27,9 @@ public class PdfService {
     public void generatePdf(DokumentCreatedEvent event){
 
         new File(PDF_DIR).mkdirs();
-//zmiana pod kątem szukania tworzenia się duplikatów
         String filePath =
                 PDF_DIR + "/" + UUID.randomUUID() + ".pdf";
-//        String filePath =
-//                PDF_DIR + "/" + event.getDokumentId() + ".pdf";
-//
-//        File pdfFile = new File(filePath);
-//
-//        if (pdfFile.exists()) {
-//            log.info("PDF już istnieje dla dokumentId={}, pomijam", event.getDokumentId());
-//            return;
-//        }
+
 
         log.info("Tworzenie PDF: {}", filePath);
 
