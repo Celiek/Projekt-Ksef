@@ -33,9 +33,12 @@ public class Dokument {
     @JoinColumn(name = "sprzedawca_id")
     private Sprzedawca sprzedawca;
 
-      @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "nabywca_id")
     private Nabywca nabywca;
+
+    // identyfikator własciciela dokumentu
+    private String ownerId;
 
     @OneToMany(mappedBy = "dokument", cascade = CascadeType.ALL)
     private List<PozycjaDokumentu> pozycje = new ArrayList<>();

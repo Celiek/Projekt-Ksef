@@ -10,6 +10,7 @@ import com.ksef.ksef.producer.mapper.DokumentMapper;
 import com.ksef.ksef.producer.producer.DokumentEventProducer;
 import com.ksef.ksef.producer.service.DokumentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,8 +24,10 @@ public class DokumentController {
     private final DokumentEventProducer producer;
 
     @PostMapping
-    public DokumentResponseDTO createDokument(@RequestBody DokumentRequest request){
-        Dokument dokument = service.createDokument(request);
+    public DokumentResponseDTO createDokument(@RequestBody DokumentRequest request, JwtAuthenticationToken auth){
+        String ownerId = auth.getToken().getSubject();
+
+        Dokument dokument = service.createDokument(request,ownerId);
 
         DokumentCreatedEvent event = dokumentEventMapper.mapToEvent(dokument);
         //producer.send(event);

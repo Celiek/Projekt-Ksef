@@ -68,6 +68,7 @@ public class DokumentService {
 
         dokument.setNabywca(nabywca);
         dokument.setSprzedawca(sprzedawca);
+        dokument.setOwnerId(request.ownerId);
 
         for(PozycjaRequest p : request.pozycje){
             PozycjaDokumentu pozycja = new PozycjaDokumentu();
